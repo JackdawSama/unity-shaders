@@ -20,23 +20,31 @@ Shader "Learning/SimpleShader"
             struct VertexInput
             {
                 float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                float2 uv0 : TEXCOORD0;
             };
 
             struct VertexOutput
             {
-                float4 vertex : SV_POSITION;
+                float4 clipSpacePos : SV_POSITION;
+                float2 uv0 : TEXCOORD0;
+                float3 normal : TEXCOORD1;
             };
 
             VertexOutput vert (VertexInput v)
             {
                 VertexOutput o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.uv0 = v.uv0;
+                o.normal = v.normal;
+                o.clipSpacePos = UnityObjectToClipPos(v.vertex);
                 return o;
             }
 
-            fixed4 frag (VertexOutput i) : SV_Target
+            fixed4 frag (VertexOutput o) : SV_Target
             {
-                return float4 (1,1,1,0);
+                float2 uv = o.uv0;
+                float3 normal = o.normal;
+                return float4 (normal,0);
             }
             ENDCG
         }
