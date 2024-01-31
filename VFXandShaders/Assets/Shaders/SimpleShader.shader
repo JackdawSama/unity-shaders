@@ -20,15 +20,15 @@ Shader "Learning/SimpleShader"
             struct VertexInput
             {
                 float4 vertex : POSITION;
-                float3 normal : NORMAL;
                 float2 uv0 : TEXCOORD0;
+                float3 normal : NORMAL;
             };
 
             struct VertexOutput
             {
                 float4 clipSpacePos : SV_POSITION;
                 float2 uv0 : TEXCOORD0;
-                float3 normal : TEXCOORD1;
+                float3 normal : NORMAL;
             };
 
             VertexOutput vert (VertexInput v)
@@ -43,8 +43,15 @@ Shader "Learning/SimpleShader"
             fixed4 frag (VertexOutput o) : SV_Target
             {
                 float2 uv = o.uv0;
-                float3 normal = o.normal;
-                return float4 (normal,0);
+
+                float3 lightDir = normalize(float3(1,1,1));
+                float3 lightColour = float3(0.5,0.3,0.76);
+
+                float simpleLight = dot(lightDir, o.normal);
+
+
+
+                return float4 (simpleLight * lightColour,0);
             }
             ENDCG
         }
