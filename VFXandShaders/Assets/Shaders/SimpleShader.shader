@@ -49,6 +49,8 @@ Shader "Learning/SimpleShader"
 
                 float simpleLight = dot(lightDir, o.normal);
 
+                float3 normal = o.normal * 0.5 + 0.5;
+
 
 
                 return float4 (simpleLight * lightColour,0);
